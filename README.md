@@ -27,12 +27,12 @@ tile_to_discard, with_riichi = ai.discard_tile(discard_tile)
 - with_riichi: bool. Should call riichi after tile discard.
 
 ```python
-ai.kan.should_call_kan(tile, open_kan, from_riichi)
+kan_type = ai.kan.should_call_kan(tile, open_kan, from_riichi)
 ```
 - tile: int, 136_tile. Generated from TilesConverter.string_to_136_array[0].
 - open_kan: bool. False for 暗杠.
 - from_riichi: bool. Already riichi.
-- return: bool. Should call kan.
+- return: None for do not kan. kan_type == mahjong.meld.SHOUMINKAN for "upgraded pon to kan", else for "call a closed kan set".
 
 ```python
 ai.should_call_win(tile, is_tsumo, enemy_seat, is_chankan)
@@ -53,7 +53,7 @@ meld, discard_option = self.ai.try_to_call_meld(tile, is_kamicha_discard)
 ```
 - tile: int, 136_tile. Generated from TilesConverter.string_to_136_array[0].
 - is_kamicha_discard： bool. Discard tile is from opponent on the left(上家).
-- meld: meld==none for skip. meld.type=MeldPrint.CHI\PON, meld.tiles=list of int, size of 3, 136_array.
+- meld: meld==none for skip. meld.type=mahjong.meld.CHI\PON, meld.tiles=list of int, size of 3, 136_array.
 - discard_option: int, 136_tile. Tile to discard.
 
 ```python
