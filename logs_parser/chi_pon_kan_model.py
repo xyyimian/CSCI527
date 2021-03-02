@@ -1,9 +1,3 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[1]:
-
-
 import sys
 from parser import parse_mjlog
 from viewer import print_node
@@ -13,6 +7,7 @@ import numpy as np
 import copy
 from pandas.core.frame import DataFrame
 import json
+import time
 
 
 # In[2]:
@@ -409,7 +404,7 @@ def main(year):
     
     df = pd.read_csv(input_csv_path) 
     
-    output_json_path = 'tiles_state_and_action_sum.json'
+    output_json_path = '../test/modiefied_sum_2021.json'
     file = open(output_json_path, 'a+',encoding='utf-8')
       
     # raw data extract from logs
@@ -439,29 +434,6 @@ def main(year):
     global could_minkan_list
     global valid_chi_mentsu
 
-    player_id_list = []
-    four_closed_hands_list = []
-    four_discarded_hands_list = []
-    four_open_hands_list = []
-    dora_list = []
-    action_list = []
-    dealer_list = []
-    raw_repeat_dealer_list = []
-    raw_riichi_bets_list = []
-    scores_list = []
-    raw_player_wind_list = []
-    prevailing_wind_list = []
-    
-    player_tiles_list = []
-    enemies_tiles_list = []
-    player_wind_list = []
-    repeat_dealer_list = []
-    riichi_bets_list = []
-    last_player_discarded_tile_list = []
-    last_three_discarded_tile_list = []
-    could_chi_list = []
-    could_pon_list = []
-    could_minkan_list = []
     
     # last_player_tile cur_possible_tiles
     valid_chi_mentsu = {
@@ -497,7 +469,7 @@ def main(year):
          26: [[24, 25]]
     }
 
-      
+    
     for i in range(len(df["log_content"])):       
         xml_str = df["log_content"][i] 
         if type(xml_str) != str:
@@ -510,6 +482,31 @@ def main(year):
             if len(data["meta"]['UN'][3]["name"]) == 0:
                 continue
             else:      
+
+                player_id_list = []
+                four_closed_hands_list = []
+                four_discarded_hands_list = []
+                four_open_hands_list = []
+                dora_list = []
+                action_list = []
+                dealer_list = []
+                raw_repeat_dealer_list = []
+                raw_riichi_bets_list = []
+                scores_list = []
+                raw_player_wind_list = []
+                prevailing_wind_list = []
+                
+                player_tiles_list = []
+                enemies_tiles_list = []
+                player_wind_list = []
+                repeat_dealer_list = []
+                riichi_bets_list = []
+                last_player_discarded_tile_list = []
+                last_three_discarded_tile_list = []
+                could_chi_list = []
+                could_pon_list = []
+                could_minkan_list = []
+
                 last_dealer = -1
                 repeat_dealer = [0, 0, 0, 0]
                 prevailing_wind = 'E'
@@ -529,49 +526,43 @@ def main(year):
                     
                     last_dealer = dealer
                     
-    pair_data()                
+                pair_data()                
 
     
-    for k in range(len(player_id_list)):
-        res = {
-            'player_id': player_id_list[k],
-            'dealer': dealer_list[k],
-            'repeat_dealer': repeat_dealer_list[k],
-            'riichi_bets' : riichi_bets_list[k],
-             'player_wind': player_wind_list[k],
-             'prevailing_wind': prevailing_wind_list[k],
-             'player_tiles': player_tiles_list[k],
-             'enemies_tiles': enemies_tiles_list[k],
-             'dora': dora_list[k],
-             'scores': scores_list[k],
-             'last_player_discarded_tile': last_player_discarded_tile_list[k],
-             'last_three_discarded_tile': last_three_discarded_tile_list[k],
-             'could_chi' : could_chi_list[k],
-             'could_pon' : could_pon_list[k],
-             'could_minkan' : could_minkan_list[k],
-             'action' : action_list[k]                   
-        }
+                for k in range(len(player_id_list)):
+                    res = {
+                        'player_id': player_id_list[k],
+                        'dealer': dealer_list[k],
+                        'repeat_dealer': repeat_dealer_list[k],
+                        'riichi_bets' : riichi_bets_list[k],
+                         'player_wind': player_wind_list[k],
+                         'prevailing_wind': prevailing_wind_list[k],
+                         'player_tiles': player_tiles_list[k],
+                         'enemies_tiles': enemies_tiles_list[k],
+                         'dora': dora_list[k],
+                         'scores': scores_list[k],
+                         'last_player_discarded_tile': last_player_discarded_tile_list[k],
+                         'last_three_discarded_tile': last_three_discarded_tile_list[k],
+                         'could_chi' : could_chi_list[k],
+                         'could_pon' : could_pon_list[k],
+                         'could_minkan' : could_minkan_list[k],
+                         'action' : action_list[k]                   
+                    }
 
-        res_str = json.dumps(res)
-        file.write(res_str+'\n')
+                    res_str = json.dumps(res)
+                    file.write(res_str+'\n')
                             
     
 
 
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
-for year in range(2009, 2022):
+for year in range(2021, 2022):
+    # start = time.time()
     print('processing {}'.format(year))
     if year == 2020:
         continue       
     main(year)
+    # end = time.time()
+    # print(end - start)
 
     
 
@@ -644,7 +635,3 @@ for year in range(2009, 2022):
 
 
 # In[ ]:
-
-
-
-
